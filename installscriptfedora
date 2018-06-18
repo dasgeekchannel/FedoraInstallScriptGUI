@@ -94,6 +94,7 @@ else
 			sudo rpm -ivh http://rpm.livna.org/livna-release.rpm
 			sudo dnf -y update && dnf -y install libdvdcss
 			sudo dnf -y install vlc
+			sudo dnf install -y gstreamer1-libav.x86_64 
 			sleep 1.0
 			;;
 # Section B -------notes---------------------------
