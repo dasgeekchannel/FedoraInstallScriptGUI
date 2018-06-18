@@ -27,8 +27,10 @@ else
 	        4_social "	Discord (Snap)" off
 	        5_social "	Hexchat" off
 	        6_social "	Signal(Flatpak)" off
+	        7_social "	Thunderbird Mail" off
 	    #D "<----Category: Tweaks---->" on
 	        1_tweak "	Gnome Tweak Tool" off
+	        2_tweak "	Gnome Shell Extensions" off
 	    #E "<----Category: Media---->" on  
 	        1_media "	SM Player Media Player" off
 	        2_media "	Pithos (Pandora)" off
@@ -94,7 +96,7 @@ else
 			sudo rpm -ivh http://rpm.livna.org/livna-release.rpm
 			sudo dnf -y update && dnf -y install libdvdcss
 			sudo dnf -y install vlc
-			sudo dnf install -y gstreamer1-libav.x86_64 
+			sudo dnf install -y gstreamer1-libav.x86_64
 			sleep 1.0
 			;;
 # Section B -------notes---------------------------
@@ -147,6 +149,12 @@ else
 				flatpak install -y https://flathub.org/repo/appstream/org.signal.Signal.flatpakref				
          		;;
 
+         	7_social)
+				#Thunderbird
+				echo "Installing Thunderbird Mail"
+				dnf install -y thunderbird
+				;;
+
 # Section D -----------tweak-----------------------
 	
 			1_tweak)
@@ -155,6 +163,11 @@ else
 				dnf -y install gnome-tweak-tool 
 				;;
 
+			2_tweak)
+				#Gnome Shell Integration	
+				echo "Installing Gnome Shell"
+				dnf -y install chrome-gnome-shell
+				;;
 # Section E -------------media---------------------
 
 			1_media)
