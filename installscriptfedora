@@ -1,0 +1,353 @@
+#!/bin/bash
+# Forked  respin respun forked stolen and modified by DasGeek
+# Tested w/ Fedora 28 Gnome
+# Version 1.0.0
+
+if [[ $EUID -ne 0 ]]; then
+   	echo "This script must be run as root type: sudo ./installscript" 
+   	exit 1
+else
+	#Update and Upgrade
+	echo "Updating and Upgrading"
+	sudo dnf -y update --refresh
+
+	sudo dnf -y install dialog 
+	cmd=(dialog --title "DasGeek Installer" --separate-output --checklist "Please Select Software You Want To Install:" 22 80 16)
+	options=(
+		#A "<----Category: Software Repositories---->" on
+			1_repos "	Install snapd Repository" off
+			2_repos "	Install RPM Free & NonFree" off
+			3_repos "	Install Media Codecs & VLC" off
+		#B "<----Category: Notes---->" on 
+	        1_notes "	Simplenote (SNAP)" off
+	    #C "<----Category: Social---->" on
+			1_social "	Mumble Client (SNAP)" off
+	        2_social "	Zoom Meeting Client" off
+	        3_social "	Telegram (SNAP)" off
+	        4_social "	Discord (Snap)" off
+	        5_social "	Hexchat" off
+	        6_social "	Signal(Flatpak)" off
+	    #D "<----Category: Tweaks---->" on
+	        1_tweak "	Gnome Tweak Tool" off
+	    #E "<----Category: Media---->" on  
+	        1_media "	SM Player Media Player" off
+	        2_media "	Pithos (Pandora)" off
+	    	3_media "	Google Desktop Player (SNAP)" off
+	    #F "<----Category: Internet---->" on
+	        1_internet "	Chromium" off  	
+	       	2_internet "	get-iplayer (SNAP)" off	     
+	    #G "<----Category: Video, Audio & Pic Editing---->" on
+	        1_edit "	Kdenlive" off
+	        2_edit "	Shotwell" off
+	        3_edit "	GIMP (Flatpak)" off
+	        4_edit "	OBS-Studio" off
+	        5_edit "	Audacity" off
+		#H "<----Category: Security---->" on
+			1_security "	PIA VPN (Network Mgr Version)" off
+		#I "<----Category: Utility---->" on
+		    1_utility "	Virtualbox" off
+		    2_utility "	Etcher" off
+			3_utility "	Tilix" off
+			4_utility "	Terminator" off
+			5_utility "	Synology NAS Backup" off
+			6_utility "	Gnome-do (Search Tool)" off
+			7_utility "	Guvcview (webcam settings)" off
+			8_utility "	Cheese" off	
+		#J "<----Category: Coding & FTP---->" on
+			1_coding "	Pycharm Community (Pycharm Flatpak)" off
+	    	2_coding "	Sublime Text" off # any option can be set to default to "on"
+			3_coding "	Atom" off
+			4_coding "	Putty" off
+            5_coding "	Gedit" off
+	        6_coding "	Filezilla" off
+		#K "<----Category: Gaming & Fun---->" on
+			1_gaming "	Steam (Valve Flatpak)" off
+			2_gaming "	Lutris" off)
+
+		choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
+		clear
+		for choice in $choices
+		do
+		    case $choice in
+# Section A ------------repos----------------------
+			1_repos)	
+			#Install Snap Repository (Software Repository)
+			echo "Installing Snap Repository"
+			sudo dnf install snapd -y
+			sleep 1.5
+			;;
+
+			2_repos)
+			#Install RPM Packages
+			echo "Installing RPM package Repositories"
+			sudo dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm -y
+			sleep 1.5
+			sudo dnf -y update
+			;;
+
+			3_repos)
+			#Install Media Codecs
+			echo "Installing Media Codecs"
+			sudo dnf -y install gstreamer-plugins-bad gstreamer-plugins-ugly lame faad2
+			sudo dnf -y install ffmpeg ffmpeg-libs gstreamer-ffmpeg
+			sudo dnf -y install libaacs libbdplus
+			sudo rpm -ivh http://rpm.livna.org/livna-release.rpm
+			sudo dnf -y update && dnf -y install libdvdcss
+			sudo dnf -y install vlc
+			sleep 1.0
+			;;
+# Section B -------notes---------------------------
+
+			1_notes)
+			    #Simplenote (SNAP)
+				echo "Installing Simplenote"
+				snap install simplenote
+				;;
+# Section C --------social-------------------------
+
+			1_social)
+				#Mumble Client (SNAP)
+				echo "Mumble"
+				snap install mumble
+				sleep 1.0		
+				;;		
+
+			2_social)
+				#Zoom
+				echo "Installing Zoom Meeting Client"
+				echo "Installing dependency First"				
+				wget https://zoom.us/client/latest/zoom_x86_64.rpm
+				sudo dnf -y localinstall zoom_x86_64.rpm
+				rm -rf zoom_x86_64.rpm
+				sleep 1.0
+				;;
+			3_social)
+				#Telegram
+				echo "Installing Telegram Snap"
+				sudo snap install telegram-desktop
+				;;
+
+			4_social)
+				#Discord
+				echo "Install Discord Snap"
+				sudo snap install discord
+				;;
+
+			5_social)	
+				#Hexchat
+				echo "Installing Hexchat"
+				sudo dnf -y hexchat.x86_64
+				;;
+			
+			6_social) 
+				#Signal
+				echo "Installing Signal Messenger"
+				flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+				flatpak install -y https://flathub.org/repo/appstream/org.signal.Signal.flatpakref				
+         		;;
+
+# Section D -----------tweak-----------------------
+	
+			1_tweak)
+				#Gnome tweak tool
+				echo "Installing Gnome Tweak Tool"
+				dnf -y install gnome-tweak-tool 
+				;;
+
+# Section E -------------media---------------------
+
+			1_media)
+				#SMPlayer
+				echo "SMPlayer"
+				dnf -y install smplayer
+				;;
+
+			2_media) 
+				#Pithos
+				echo "installing Pithos"
+				dnf -y install pithos
+				;;
+
+			3_media) 
+				#Google Desktop Player (SNAP)
+				echo "Installing Google Desktop Player"
+				snap install google-play-music-desktop-player
+				;;
+# Section F -------------internet--------------------
+			1_internet)
+				#Chromium
+				echo "Installing Chromium"
+				dnf -y install chromium
+				;;
+
+			2_internet) #get-iplayer (SNAP)
+				echo "get-iplayer"
+				sudi install snapd
+				snap install get-iplayer
+				;;
+	# Section G -------------edit(Video/Audio/Pic)---------------------	
+			1_edit)
+				#Kdenlive
+				echo "Kdenlive"
+				sudo dnf -y install kdenlive.x86_64
+				sudo dnf -y install breeze-icon-theme.noarch
+				sudo dnf -y install vlc
+				;;
+				
+			2_edit)	
+				#Shotwell
+				echo "Installing Shotwell"
+				sudo dnf -y install shotwell.x86_64
+				;;            
+    		
+			3_edit)
+				#GIMP (Flatpak)
+				echo "Installing GIMP"
+				flatpak install https://flathub.org/repo/appstream/org.gimp.GIMP.flatpakref
+				;;
+
+			4_edit)
+				#OBS Studio (SNAP)
+				echo "Installing OBS Studio"
+				dnf -y install ffmpeg
+				dnf -y install obs-studio.x86_64
+				#sudo apt-get install ffmpeg -y
+				#sudo add-apt-repository ppa:obsproject/obs-studio
+ 				#sudo apt-get update && sudo apt-get install obs-studio -y
+				;;	
+
+			5_edit) 
+				#Audacity
+				echo "installing Audacity"
+				sudo dnf -y install audacity
+				;;
+
+
+	# Section H -----------security-----------------------	
+			1_security)	
+				#PIA VPN NM Version
+				echo "Installing PIA VPN Network Manager Version"
+				git clone https://github.com/shaynewang/piafedora.git
+				cd piafedora
+				chmod +x install_fedora.sh
+				sudo ./install_fedora.sh
+				;;
+	
+	# Section I ----------utility------------------------	
+
+    		1_utility)	
+    			#Virtualbox
+				echo "Installing Virtualbox"
+				dnf -y install VirtualBox.x86_64
+				dnf -y install virtualbox-guest-additions-ogl.x86_64
+				;;
+
+
+			2_utility) 
+				#Etcher ISO Creator
+				echo "Installing Etcher"
+				sudo wget https://bintray.com/resin-io/redhat/rpm -O /etc/yum.repos.d/bintray-resin-io-redhat.repo
+				sudo dnf install -y etcher-electron
+				;;
+
+			3_utility) 
+				#Tilix (Tiling Terminal)
+				echo "Installing Tilix"
+				dnf install -y tilix.x86_64
+				dnf install -y tilix-nautilus.x86_64
+				;;
+
+			4_utility)
+				#Terminator
+				echo "Installing Skynet/Terminator"
+				sudo dnf install -y terminator.noarch
+				;;
+
+			5_utility) 
+				#Synology NAS Assistant & Backup
+				echo "Installing CloudStation Backup"
+				wget https://global.download.synology.com/download/Tools/CloudStationBackup/4.2.7-4415/Fedora/Installer/x86_64/synology-cloud-station-backup-4.2.7-4415.x86_64.rpm
+				sudo dnf install -y synology-cloud-station-backup-4.2.7-4415.x86_64.rpm
+				;;
+
+			6_utility) 
+				#Gnome-do
+				echo "Installing GnomeDo"
+				dnf install -y gnome-do.x86_64
+				;;
+
+			7_utility) 
+				#Guvcview
+				echo "installing Guvcview"
+				dnf install -y guvcview.x86_64
+				;;
+
+			8_utility) 
+				#Cheese
+				echo "Installing Cheese"
+				dnf install -y cheese.x86_64
+				;;
+		
+
+	# Section J -----------coding-----------------------	
+
+			1_coding) 	
+				#Python Tools (Flatpak Pycharm)
+				echo "Installing Python Tools"
+				#Install PIP
+				sudo dnf install -y python3-pip.noarch
+				#Install Jetbrains Flatpak
+				flatpak install flathub com.jetbrains.PyCharm-Community
+				;;
+
+	        2_coding)
+	            #Install Sublime Text*
+				echo "Installing Sublime Text"
+				sudo rpm -v --import https://download.sublimetext.com/sublimehq-rpm-pub.gpg
+				sudo dnf config-manager --add-repo https://download.sublimetext.com/rpm/stable/x86_64/sublime-text.repo
+				sudo dnf install -y sublime-text
+				;;
+
+			3_coding)	
+				#Atom
+				echo "Installing Atom"				
+				wget https://github.com/atom/atom/releases/download/v1.27.2/atom.x86_64.rpm
+				sudo dnf install -y ./atom.x86_64.rpm
+				rm -rf atom.x86_64.rpm
+				;;
+
+			4_coding)	
+				#Putty
+				echo "Putty"
+				dnf install -y putty.x86_64
+				;;
+
+	
+			5_coding)	
+				#Install Gedit
+				echo "Gedit"
+				dnf install -y gedit.x86_64
+				;;
+			
+			6_coding)
+				#Filezilla
+				echo "Filezilla not related to Godzilla"
+				dnf install -y filezilla.x86_64
+				;;
+			
+	# Section K -----------game-----------------------	
+			1_gaming)
+				#Steam
+				echo "Installing Steam"				
+				sudo flatpak install flathub com.valvesoftware.Steam
+				;;
+
+			2_gaming)
+				#Lutris
+				echo "Installing Lutris"
+				dnf config-manager --add-repo https://download.opensuse.org/repositories/home:strycore/Fedora_28/home:strycore.repo
+				dnf install -y lutris
+
+	    esac
+	done
+fi
