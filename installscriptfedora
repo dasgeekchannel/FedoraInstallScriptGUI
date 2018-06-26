@@ -63,8 +63,9 @@ else
             5_coding "	Gedit" off
 	        6_coding "	Filezilla" off
 		#K "<----Category: Gaming & Fun---->" on
-			1_gaming "	Steam (Valve Flatpak)" off
-			2_gaming "	Lutris" off)
+			1_gaming "	Steam (Valve RPM)" off
+			2_gaming "	Lutris" off
+			3_gaming "	Feral Game Boost (testing)" off)
 
 		choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
 		clear
@@ -301,7 +302,12 @@ else
 				echo "Installing Cheese"
 				dnf install -y cheese.x86_64
 				;;
-		
+
+			9_Nano)
+				#Nano
+				echo "Installing Nano edit"
+				dnf install -y nano
+				;;
 
 	# Section J -----------coding-----------------------	
 
@@ -353,7 +359,7 @@ else
 			1_gaming)
 				#Steam
 				echo "Installing Steam"				
-				sudo flatpak install flathub com.valvesoftware.Steam
+				sudo dnf install -y steam.i686
 				;;
 
 			2_gaming)
@@ -361,7 +367,22 @@ else
 				echo "Installing Lutris"
 				dnf config-manager --add-repo https://download.opensuse.org/repositories/home:strycore/Fedora_28/home:strycore.repo
 				dnf install -y lutris
+				;;
 
+			3_gaming)
+				#Feral Game Boost
+				echo "Installing Feral Game Boost"
+				dnf install -y meson systemd-devel pkg-config git
+				git clone https://github.com/FeralInteractive/gamemode.git
+				currentuser=$(who | awk 'NR==1{print $1}')
+				chown -R $currentuser:$currentuser ~/Documents/gamemode
+				cd gamemode
+				git checkout 1.1
+				./bootstrap.sh
+				sleep 3
+				echo " Put following code in Launch Properties of Game: LD_PRELOAD=$LD_PRELOAD:/usr/\$LIB/libgamemodeauto.so %command%"
+				sleep 2
+				;;
 	    esac
 	done
 fi
