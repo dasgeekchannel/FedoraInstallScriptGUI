@@ -197,7 +197,7 @@ else
 
 			2_internet) #get-iplayer (SNAP)
 				echo "get-iplayer"
-				sudi install snapd
+				sudo install snapd
 				snap install get-iplayer
 				;;
 	# Section G -------------edit(Video/Audio/Pic)---------------------	
