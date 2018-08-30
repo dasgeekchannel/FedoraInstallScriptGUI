@@ -44,6 +44,7 @@ else
 	        3_edit "	GIMP (Flatpak)" off
 	        4_edit "	OBS-Studio" off
 	        5_edit "	Audacity" off
+	        6_edit "	OcenAudio" off
 		#H "<----Category: Security---->" on
 			1_security "	PIA VPN (Network Mgr Version)" off
 		#I "<----Category: Utility---->" on
@@ -237,7 +238,12 @@ else
 				sudo dnf -y install audacity
 				;;
 
-
+			6_edit)
+				#OcenAudio
+				echo "Installing OcenAudio"
+				wget https://www.ocenaudio.com/downloads/ocenaudio_centos7.rpm
+				dnf -y install ocenaudio_centos7_64_3.4.5.rpm
+				;;
 	# Section H -----------security-----------------------	
 			1_security)	
 				#PIA VPN NM Version
@@ -261,8 +267,8 @@ else
 			2_utility) 
 				#Etcher ISO Creator
 				echo "Installing Etcher"
-				sudo wget https://bintray.com/resin-io/redhat/rpm -O /etc/yum.repos.d/bintray-resin-io-redhat.repo
-				sudo dnf install -y etcher-electron
+				wget https://bintray.com/resin-io/redhat/rpm -O /etc/yum.repos.d/bintray-resin-io-redhat.repo
+				dnf -y install etcher-electron
 				;;
 
 			3_utility) 
