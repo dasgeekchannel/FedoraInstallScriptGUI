@@ -31,6 +31,7 @@ else
 	    #D "<----Category: Tweaks---->" on
 	        1_tweak "	Gnome Tweak Tool" off
 	        2_tweak "	Gnome Shell Extensions" off
+	        3_tweak "	i3wm & Das Config DE" off
 	    #E "<----Category: Media---->" on  
 	        1_media "	SM Player Media Player" off
 	        2_media "	Pithos (Pandora)" off
@@ -169,6 +170,32 @@ else
 				#Gnome Shell Integration	
 				echo "Installing Gnome Shell"
 				dnf -y install chrome-gnome-shell
+				;;
+			3_tweak)
+				#Install i3wm DE & dasgeek config
+				echo "Installing i3wm & config"
+				dnf -y install i3 i3status dmenu i3lock xbacklight feh conky 
+				#Use XFCE panel instead of default i3 and xfce plugins
+				dnf -y xfwm4.x86_64 xfce4-statusnotifier-plugin.x86_64 xfce4-statusnotifier-plugin.x86_64 xfce4-pulseaudio-plugin.x86_64 xfce4-sensors-plugin.x86_64 xfce4-battery-plugin.x86_64 xfce4-panel.x86 xfce4-whiskermenu-plugin.x86_64 xfce4-clipman-plugin.x86_64 xfce4-session.x86_64
+				# Installs compton to prevent screen tearing
+				dnf -y install compton.x86_64
+				currentuser=$(who | awk 'NR==1{print $1}')
+				touch /home/$currentuser/.config/compton.conf
+echo "# basic configuration
+backend = "glx";
+vsync = "opengl-swc";
+
+glx-copy-from-front = true;
+glx-swap-method = 2;
+xrender-sync = true;
+xrender-sync-fence = true;
+
+# transparancy settings for i3
+opacity-rule = [
+"0:_NET_WM_STATE@:32a *= '_NET_WM_STATE_HIDDEN'"
+];" > /home/$currentuser/.config/compton.conf
+				currentuser=$(who | awk 'NR==1{print $1}')
+				chown -R $currentuser:$currentuser /home/$currentuser/.config/compton.conf
 				;;
 # Section E -------------media---------------------
 
