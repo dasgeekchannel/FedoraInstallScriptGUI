@@ -190,6 +190,7 @@ else
 				sleep 2
 				currentuser=$(who | awk 'NR==1{print $1}')
 				touch /home/$currentuser/.config/compton.conf
+				wget https://github.com/dasgeekchannel/i3wmFedora28Config/raw/master/i3wallpaper.png
 				curl  https://raw.githubusercontent.com/dasgeekchannel/i3wmFedora28Config/master/compton.conf -o compton.conf
                 sleep 2
                 wget https://github.com/dasgeekchannel/i3wmFedora28Config/raw/master/xfce4.zip
@@ -207,6 +208,7 @@ else
                 sleep 2
                 mv compton.conf /home/$currentuser/.config/
                 currentuser=$(who | awk 'NR==1{print $1}')
+                mv i3wallpaper.png /home/$currentuser/Pictures
                 
 #echo "# basic configuration
 #backend = "glx";
