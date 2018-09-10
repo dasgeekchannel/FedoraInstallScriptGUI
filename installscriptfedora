@@ -32,6 +32,7 @@ else
 	        1_tweak "	Gnome Tweak Tool" off
 	        2_tweak "	Gnome Shell Extensions" off
 	        3_tweak "	i3wm & Das Config DE" off
+	        4_tweak "	Midnight Commander" off
 	    #E "<----Category: Media---->" on  
 	        1_media "	SM Player Media Player" off
 	        2_media "	Pithos (Pandora)" off
@@ -57,6 +58,7 @@ else
 			6_utility "	Gnome-do (Search Tool)" off
 			7_utility "	Guvcview (webcam settings)" off
 			8_utility "	Cheese" off	
+			9_utility "	Nano" off
 		#J "<----Category: Coding & FTP---->" on
 			1_coding "	Pycharm Community (Pycharm Flatpak)" off
 	    	2_coding "	Sublime Text" off # any option can be set to default to "on"
@@ -228,6 +230,12 @@ else
 				chown -R $currentuser:$currentuser /home/$currentuser/Pictures/i3wallpaper.png
 				chown -R $currentuser:$currentuser /home/$currentuser/.config/xfce4
 				;;
+
+			4_tweak)
+				#Midnight Commander
+				echo "Installing MC Cli File Manager"
+				dnf -y mc
+				;;
 # Section E -------------media---------------------
 
 			1_media)
@@ -367,7 +375,7 @@ else
 				dnf install -y cheese.x86_64
 				;;
 
-			9_Nano)
+			9_utility)
 				#Nano
 				echo "Installing Nano edit"
 				dnf install -y nano
