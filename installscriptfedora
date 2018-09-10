@@ -225,6 +225,8 @@ else
 #];" > /home/$currentuser/.config/compton.conf
 				currentuser=$(who | awk 'NR==1{print $1}')
 				chown -R $currentuser:$currentuser /home/$currentuser/.config/compton.conf
+				chown -R $currentuser:$currentuser /home/$currentuser/Pictures/i3wallpaper.png
+				chown -R $currentuser:$currentuser /home/$currentuser/.config/xfce4
 				;;
 # Section E -------------media---------------------
 
